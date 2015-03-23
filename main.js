@@ -18,7 +18,6 @@ app.use(function(req, res, next)
 	next(); // Passing the request to the next handler in the stack.
 });
 
-
 // app.post('/upload',[ multer({ dest: './uploads/'}), function(req, res){
 //    console.log(req.body) // form fields
 //    console.log(req.files) // form files
