@@ -14,7 +14,7 @@ client.get("key", function(err,value){ console.log(value)});
 
 
 
-var server = app.listen(3001, function () {
+var server = app.listen(3000, function () {
 
   var host = server.address().address
   var port = server.address().port
@@ -59,7 +59,7 @@ app.get('/set', function(req, res){
 
 app.get('/recent', function(req, res){
 
-	client.lrange('history', -100, 100, function(err, value){
+	client.lrange('history', 0, -1, function(err, value){
 		console.log(value);
 
 		res.send(value);
@@ -76,7 +76,7 @@ app.post('/upload', multer({ dest: './uploads/'}), function(req, res){
 	   fs.readFile( req.files.image.path, function (err, data) {
 	  		if (err) throw err;
 	  		var img = new Buffer(data).toString('base64');
-	  		client.set("image", img);
+	  		client.lpush("image", img);
 	  		console.log(img);
 		});
 	}
@@ -86,16 +86,12 @@ app.post('/upload', multer({ dest: './uploads/'}), function(req, res){
 
 app.get('/meow', function(req, res) {
 	{
-		//if (err) throw err;
 		res.writeHead(200, {'content-type':'text/html'});
 
-		client.get("image", function(err, imagedata){
-			//items.forEach(function (imagedata) 
-			//{
+		client.lpop("image", function(err, imagedata){
 
 			console.log(imagedata);
    			res.write("<h1>\n<img src='data:my_pic.jpg;base64,"+imagedata+"'/>");
-			//});
 
 			res.end();
 		})
