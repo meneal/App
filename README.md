@@ -5,15 +5,15 @@ This repo was created for option two.
 
 ## Prerequisites
 
- - Redis should be installed on your machine globally:  
+ Redis should be installed on your machine globally:  
 
- If you are using [Homebrew](http://brew.sh/) in OSX this is as easy as:
+ - If you are using [Homebrew](http://brew.sh/) in OSX this is as easy as:
 
- `brew install redis`
+  `brew install redis`
 
- In Ubuntu linux:
+ - In Ubuntu linux:
 
-`sudo apt-get install redis-server`
+  `sudo apt-get install redis-server`
 
 ## Usage
 
@@ -23,7 +23,7 @@ Clone the repo and cd into it's directory and then run;
 
 Then in another window run:
 
-`redis-server`
+  `redis-server`
 
 This brings up redis on port 6379.
 
