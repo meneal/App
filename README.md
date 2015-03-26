@@ -63,7 +63,7 @@ This brings up the redis command line interface, then run:
 
 After the image is removed run:
 
-curl -F "image=@./img/morning.jpg" localhost/upload
+`curl -F "image=@./img/morning.jpg" localhost/upload`
 
 This reuploads the cat photo, but as you can see in the image below the proxy server deals with sending commands to each service instance in an alternating fashion.  Additionally all of the original set and get functions work.  
 
@@ -76,10 +76,10 @@ Going to [http://localhost/meow](http://localhost/meow) brings up the screenshot
 Going to [http://localhost/recent](http://localhost/recent) brings up the screenshot below:
 ![localhost recent](https://github.com/Wildtrack/HW3/blob/master/img/LocalHostRecent.png)
 
-Going to [http://localhost/set](http://localhost/set) brings up the screenshot below
+Going to [http://localhost/set](http://localhost/set) brings up the screenshot below:
 ![set](https://github.com/Wildtrack/HW3/blob/master/img/set.png)
 
-And then very quickly going to Going to [http://localhost/get](http://localhost/get) brings up the screenshot below
+And then very quickly going to Going to [http://localhost/get](http://localhost/get) brings up the screenshot below:
 ![get](https://github.com/Wildtrack/HW3/blob/master/img/get.png)
 
 An image below shows the output of the services after all commands have been run.
