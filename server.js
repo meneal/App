@@ -13,7 +13,6 @@ client.get("key", function(err,value){ console.log(value)});
 
 
 
-
 var server = app.listen(3000, function () {
 
   var host = server.address().address
@@ -94,10 +93,18 @@ app.get('/meow', function(req, res) {
    			res.write("<h1>\n<img src='data:my_pic.jpg;base64,"+imagedata+"'/>");
 
 			res.end();
+
+			poptask();
 		})
    	
 	}
 })
+
+function poptask(){
+	console.log("After everything is over.")
+
+	client.rpop()
+}
 
 
 
