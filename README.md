@@ -74,7 +74,7 @@ Going to [http://localhost/meow](http://localhost/meow) brings up the screenshot
 ![cat image](https://github.com/Wildtrack/HW3/blob/master/img/CatImage.png)
 
 Going to [http://localhost/recent](http://localhost/recent) brings up the screenshot below:
-![localhost recent](https://github.com/Wildtrack/HW3/blob/master/img/LocalhostRecent.png)
+![localhost recent](https://github.com/Wildtrack/HW3/blob/master/img/LocalHostRecent.png)
 
 Going to [http://localhost/set](http://localhost/set) brings up the screenshot below
 ![set](https://github.com/Wildtrack/HW3/blob/master/img/set.png)
