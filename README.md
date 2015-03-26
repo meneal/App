@@ -1,79 +1,97 @@
-Cache, Proxies, Queues
+Homework 3
 =========================
 
-### Setup
+This repo was created for option two.  
 
-* Clone this repo, run `npm install`.
-* Install redis and run on localhost:6379
+## Prerequisites
 
-### A simple web server
+ - Redis should be installed on your machine globally:  
 
-Use [express](http://expressjs.com/) to install a simple web server.
+ If you are using [Homebrew](http://brew.sh/) in OSX this is as easy as:
 
-	var server = app.listen(3000, function () {
-	
-	  var host = server.address().address
-	  var port = server.address().port
-	
-	  console.log('Example app listening at http://%s:%s', host, port)
-	})
+ `brew install redis`
 
-Express uses the concept of routes to use pattern matching against requests and sending them to specific functions.  You can simply write back a response body.
+ In Ubuntu linux:
 
-	app.get('/', function(req, res) {
-	  res.send('hello world')
-	})
+`sudo apt-get install redis-server`
 
-### Redis
+## Usage
 
-You will be using [redis](http://redis.io/) to build some simple infrastructure components, using the [node-redis client](https://github.com/mranney/node_redis).
+Clone the repo and cd into it's directory and then run;
 
-	var redis = require('redis')
-	var client = redis.createClient(6379, '127.0.0.1', {})
+`npm install`
 
-In general, you can run all the redis commands in the following manner: client.CMD(args). For example:
+Then in another window run:
 
-	client.set("key", "value");
-	client.get("key", function(err,value){ console.log(value)});
+`redis-server`
 
-### An expiring cache
+This brings up redis on port 6379.
 
-Create two routes, `/get` and `/set`.
+In the first window run, the sudo command is necessary at least in OSX to open up port 80:
 
-When `/set` is visited, set a new key, with the value:
-> "this message will self-destruct in 10 seconds".
+`sudo node proxy.js`
 
-Use the expire command to make sure this key will expire in 10 seconds.
+This brings up the proxy server on port 80.
 
-When `/get` is visited, fetch that key, and send value back to the client: `res.send(value)` 
+In another console window run:
+
+`node server.js`
+
+This brings up the first service instance on port 3000.
+
+Finally in a fourth console window run:
+
+`node server2.js`
+
+This brings up the second service instance.
+
+At this point running the service showing all console windows looks as shown below.
+
+![ServiceRunning](https://github.com/Wildtrack/HW3/blob/master/img/ServiceRunning.png)
+
+## Function 
+
+The service can be accessed by going to [http://localhost](http://localhost).  Going to this site has the proxy server pipe whatever request it is to one of the service instances.  Traffic alternates between each service.  All of the same original functionality from the earlier workshop is intact.  
+
+If the cat photo from the workshop is in redis currently remove it before running the demo below.  To remove the photo do the following: 
+
+`redis-cli`
+
+This brings up the redis command line interface, then run:
+
+`del image`
+
+After the image is removed run:
+
+curl -F "image=@./img/morning.jpg" localhost/upload
+
+This reuploads the cat photo, but as you can see in the image below the proxy server deals with sending commands to each service instance in an alternating fashion.  Additionally all of the original set and get functions work.  
+
+Image of curl command:
+![curl command](https://github.com/Wildtrack/HW3/blob/master/img/CurlCommand.png)
+
+Going to [http://localhost/meow](http://localhost/meow) brings up the screenshot below:
+![cat image](https://github.com/Wildtrack/HW3/blob/master/img/CatImage.png)
+
+Going to [http://localhost/recent](http://localhost/recent) brings up the screenshot below:
+![localhost recent](https://github.com/Wildtrack/HW3/blob/master/img/LocalhostRecent.png)
+
+Going to [http://localhost/set](http://localhost/set) brings up the screenshot below
+![set](https://github.com/Wildtrack/HW3/blob/master/img/set.png)
+
+And then very quickly going to Going to [http://localhost/get](http://localhost/get) brings up the screenshot below
+![get](https://github.com/Wildtrack/HW3/blob/master/img/get.png)
+
+An image below shows the output of the services after all commands have been run.
+![fin](https://github.com/Wildtrack/HW3/blob/master/img/fin.png)
 
 
-### Recent visited sites
+## Evaluation for Option 2
+- Get/Set is complete as shown above
+- Recent is complete as shown above
+- Upload/meow is complete as shown above
+- The additional service instance is server2.js
+- The proxy is proxy.js
 
-Create a new route, `/recent`, which will display the most recently visited sites.
 
-There is already a global hook setup, which will allow you to see each site that is requested:
 
-	app.use(function(req, res, next) 
-	{
-	...
-
-Use the lpush, ltrim, and lrange redis commands to store the most recent 5 sites visited, and return that to the client.
-
-### Cat picture uploads: queue
-
-Implement two routes, `/upload`, and `/meow`.
- 
-A stub for upload and meow has already been provided.
-
-Use curl to help you upload easily.
-
-	curl -F "image=@./img/morning.jpg" localhost:3000/upload
-
-Have `upload` store the images in a queue.  Have `meow` display the most recent image to the client and *remove* the image from the queue.
-
-### Proxy server
-
-Bonus: How might you use redis and express to introduce a proxy server?
-
-See [rpoplpush](http://redis.io/commands/rpoplpush)
