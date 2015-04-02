@@ -45,8 +45,11 @@ app.get('/', function(req, res) {
   res.send('hello world')
 })
 
-app.get('/get', function(req, res){
+app.get('/switch', function(req, res) {
+  res.send("Don't trust him")
+})
 
+app.get('/get', function(req, res){
 	client.get("newkey", function(err,value){
 	 res.send(value);
 	});
