@@ -7,6 +7,9 @@ var client = redis.createClient(6379, '127.0.0.1', {})
 var multer = require('multer'); 
 var fs = require('fs');
 
+var args = process.argv.slice(2);
+var PORT = args[0];
+
 client.set("key", "value");
 client.get("key", function(err,value){ console.log(value)});
 
@@ -14,7 +17,7 @@ client.get("key", function(err,value){ console.log(value)});
 
 
 
-var server = app.listen(3001, function () {
+var server = app.listen(PORT, function () {
 
   var host = server.address().address
   var port = server.address().port
