@@ -3,7 +3,7 @@ var multer  = require('multer')
 var express = require('express')
 var fs      = require('fs')
 var app = express()
-//stuff
+//stuffs
 // REDIS
 //var client = redis.createClient(6379, '127.0.0.1', {})
 
