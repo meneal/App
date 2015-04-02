@@ -2,13 +2,17 @@ var express = require('express');
 var app = express();
 
 var redis = require('redis')
-var client = redis.createClient(6379, '127.0.0.1', {})
+
 
 var multer = require('multer'); 
 var fs = require('fs');
 
 var args = process.argv.slice(2);
 var PORT = args[0];
+var REDIS = args[1];
+console.log('Redis port' + REDIS);
+
+var client = redis.createClient(REDIS, '127.0.0.1', {})
 
 client.set("key", "value");
 client.get("key", function(err,value){ console.log(value)});
