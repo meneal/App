@@ -10,9 +10,15 @@ var fs = require('fs');
 var args = process.argv.slice(2);
 var PORT = args[0];
 var REDIS = args[1];
+var REDIS2 = (args.length == 3)? args[2] : null;
+
 console.log('Redis port' + REDIS);
 
 var client = redis.createClient(REDIS, '127.0.0.1', {})
+
+if(REDIS2 !== null){
+	var client2 = redis.createClient(REDIS2, '127.0.0.1', {})
+}
 
 client.set("key", "value");
 client.get("key", function(err,value){ console.log(value)});
@@ -87,6 +93,9 @@ app.post('/upload', multer({ dest: './uploads/'}), function(req, res){
 	  		if (err) throw err;
 	  		var img = new Buffer(data).toString('base64');
 	  		client.lpush("image", img);
+	  		if(REDIS2 !== null){
+	  			client2.lpush("image", img);
+	  		}
 	  		console.log(img);
 		});
 	}
