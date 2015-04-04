@@ -52,7 +52,7 @@ app.get('/', function(req, res) {
 })
 
 app.get('/switch', function(req, res) {
-  res.send("Don't trust him")
+  res.send("I'm on port " + PORT);
 })
 
 app.get('/get', function(req, res){
