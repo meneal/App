@@ -2,16 +2,27 @@ var express = require('express');
 var app = express();
 
 var redis = require('redis')
-var client = redis.createClient(6379, '127.0.0.1', {})
+
 
 var multer = require('multer'); 
 var fs = require('fs');
 
 var args = process.argv.slice(2);
 var PORT = args[0];
+var REDIS = args[1];
+var REDIS2 = (args.length == 3)? args[2] : null;
+
+console.log('Redis port' + REDIS);
+
+var client = redis.createClient(REDIS, '127.0.0.1', {})
+
+if(REDIS2 !== null){
+	var client2 = redis.createClient(REDIS2, '127.0.0.1', {})
+}
 
 client.set("key", "value");
 client.get("key", function(err,value){ console.log(value)});
+
 
 
 
@@ -40,8 +51,11 @@ app.get('/', function(req, res) {
   res.send('hello world')
 })
 
-app.get('/get', function(req, res){
+app.get('/switch', function(req, res) {
+  res.send("Don't trust him")
+})
 
+app.get('/get', function(req, res){
 	client.get("newkey", function(err,value){
 	 res.send(value);
 	});
@@ -79,6 +93,9 @@ app.post('/upload', multer({ dest: './uploads/'}), function(req, res){
 	  		if (err) throw err;
 	  		var img = new Buffer(data).toString('base64');
 	  		client.lpush("image", img);
+	  		if(REDIS2 !== null){
+	  			client2.lpush("image", img);
+	  		}
 	  		console.log(img);
 		});
 	}
@@ -96,18 +113,10 @@ app.get('/meow', function(req, res) {
    			res.write("<h1>\n<img src='data:my_pic.jpg;base64,"+imagedata+"'/>");
 
 			res.end();
-
-			poptask();
 		})
    	
 	}
 })
-
-function poptask(){
-	console.log("After everything is over.")
-
-	client.rpop()
-}
 
 
 
